@@ -1,0 +1,92 @@
+---
+title: "Hw 6"
+author: "Sona Thomas github: sthomas20"
+date: "4/16/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
+```
+
+## Top dogs
+
+In this homework, you will try to reproduce the fantastic infographic for [top dogs](https://informationisbeautiful.net/visualizations/best-in-show-whats-the-top-data-dog/), originally produced by David McCandless. The raw data can be found [here](https://docs.google.com/spreadsheets/d/1l_HfF5EaN-QgnLc2UYdCc7L2CVrk0p3VdGB1godOyhk/edit#gid=10). You can download this file by File -- Download As -- Microsoft Excel (.xlsx).
+
+**Submission instructions**: Create a folder named `ds202_hw6`, and name the RMarkDown file including your solutions `hw6.Rmd` under this folder. For the submission, create a GitHub repository named `ds202_hw6` under your GitHub account, and push both `hw6.Rmd` and the knitted `hw6.html` before the deadline. I will assume you use the same GitHub username as for your HW5 submission. The latest version of your homework appearing on GitHub before the deadline is graded. *It is crucial to follow the exact folder structure and file names*, so that your homework can be reproduced and graded by an automated script. This homework is **due on April 22** before class.
+
+1. Import the data and clean appropriately. To read in the data, you can use `readxl::read_xlsx('fileNameHere', sheet='sheetNameHere')`. Required data are in the sheets `Best in show` and `Best in show full sheet`. Take extra care on the column names and the first few rows of the data frame after read in.
+```{r}
+#loading in the data from the environment and "import dataset"
+KIB_Best_in_Show_public_full <- read_excel("KIB - Best in Show (public).xlsx", sheet = "Best in show full sheet", range = "A3:BS178")
+full <- KIB_Best_in_Show_public_full
+
+KIB_Best_in_Show_public_ <- read_excel("KIB - Best in Show (public).xlsx", sheet = "Best in show", range = "A6:BS181")
+best <- KIB_Best_in_Show_public_
+
+
+clean_full <- full %>%
+  filter(`Sources - see bottom right` != 'Dog breed')
+
+clean_best <- best %>%
+  filter(category != 'American Kennel Club group')
+
+
+
+#choosing columns needed from best
+
+NEWclean_best<- clean_best %>%
+  select(`Dog breed`, category, `size category`, `popularity ranking (1-173, 1 = most popular)`, `intelligence category`)
+
+#renaming columns
+NEWclean_best <- NEWclean_best %>%
+  rename(Dog_breed = `Dog breed`, size_category = `size category`, Popularity = `popularity ranking (1-173, 1 = most popular)`, intelligence_category = `intelligence category`)
+
+#choosing columns needed from full
+NEWclean_full <- clean_full %>%
+  select(`datadog score`, `Sources - see bottom right`)
+
+#renaming columns 
+NEWclean_full <- NEWclean_full %>%
+  rename(Dog_score = `datadog score`, Dog_breed = `Sources - see bottom right`)
+
+
+
+#Joining data frames together
+dog <- merge(NEWclean_best, NEWclean_full, by=c('Dog_breed'))
+
+
+#converting tyoes from chr to int
+dog$Popularity <- as.integer(dog$Popularity)
+dog$category <- as.factor(dog$category)
+dog$size_category <- as.factor(dog$size_category)
+
+
+```
+
+2. Create a graphics similar to the  [top dogs](https://informationisbeautiful.net/visualizations/best-in-show-whats-the-top-data-dog/) figure. Your figure needs to display the following information with appropriate plotting elements:
+
+- breed of dog
+- type of dog (work, toy, etc.)
+- size of dog
+- data score 
+- popularity
+- intelligence of the dog
+- appropriate legends & explanation
+
+```{r, fig.width=13, fig.height=10}
+ggplot(dog, aes(x=Dog_score, y=Popularity, color=category, shape = size_category, size = intelligence_category)) + geom_point() + geom_text(aes(label = Dog_breed), check_overlap = TRUE, hjust = 1, vjust = 0) + theme(panel.background = element_rect(fill = 'antiquewhite', colour = 'black'), plot.background = element_rect(fill = "antiquewhite"), legend.background = element_rect(fill = "antiquewhite"), legend.key = element_rect(fill = 'antiquewhite')) + scale_color_brewer(palette="Dark2") + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + labs(color = "Category", shape='Size', size= 'Intelligence') + xlab("Dog score") + ggtitle('Best in Show: The Ultimate Data Dog')
+
+
+```
+
+
+
+Hints and Notes:
+
+- The breed of dog can be displayed without the silhouttes (text only is fine)
+- Avoid (too much) overlaps!
+- Choose a good color scheme.
+- Your submission is supposed to be fully reproducible, i.e. the TA and I will 'knit' your submission in RStudio. 
