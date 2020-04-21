@@ -77,7 +77,7 @@ dog$size_category <- as.factor(dog$size_category)
 - appropriate legends & explanation
 
 ```{r, fig.width=13, fig.height=10}
-ggplot(dog, aes(x=Dog_score, y=Popularity, color=category, shape = size_category, size = intelligence_category)) + geom_point() + geom_text(aes(label = Dog_breed), check_overlap = TRUE, hjust = 1, vjust = 0) + theme(panel.background = element_rect(fill = 'antiquewhite', colour = 'black'), plot.background = element_rect(fill = "antiquewhite"), legend.background = element_rect(fill = "antiquewhite"), legend.key = element_rect(fill = 'antiquewhite')) + scale_color_brewer(palette="Dark2") + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + labs(color = "Category", shape='Size', size= 'Intelligence') + xlab("Dog score") + ggtitle('Best in Show: The Ultimate Data Dog')
+ggplot(dog, aes(x=Dog_score, y=Popularity, color=category, shape = size_category, size = intelligence_category)) + geom_point() + geom_text(aes(label = Dog_breed), check_overlap = TRUE, vjust=-1) + theme(panel.background = element_rect(fill = 'antiquewhite', colour = 'black'), plot.background = element_rect(fill = "antiquewhite"), legend.background = element_rect(fill = "antiquewhite"), legend.key = element_rect(fill = 'antiquewhite')) + scale_color_brewer(palette="Dark2") + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + labs(color = "Category", shape='Size', size= 'Intelligence') + xlab("Dog score") + ggtitle('Best in Show: The Ultimate Data Dog')
 
 
 ```
