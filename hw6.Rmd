@@ -44,6 +44,14 @@ NEWclean_best<- clean_best %>%
 NEWclean_best <- NEWclean_best %>%
   rename(Dog_breed = `Dog breed`, size_category = `size category`, Popularity = `popularity ranking (1-173, 1 = most popular)`, intelligence_category = `intelligence category`)
 
+#relabeling intelligence category
+#| NEWclean_best$intelligence_category == 'Brightest' | NEWclean_best$intelligence_category == 'Excellent'
+NEWclean_best$intelligence_category[NEWclean_best$intelligence_category == 'Above average'| NEWclean_best$intelligence_category == 'Brightest' | NEWclean_best$intelligence_category == 'Excellent'] <- 'Clever'
+
+NEWclean_best$intelligence_category[NEWclean_best$intelligence_category == 'no data'| NEWclean_best$intelligence_category == 'Lowest' | NEWclean_best$intelligence_category == 'Fair'| NEWclean_best$intelligence_category == 'Average'] <- 'Dumb'
+
+
+
 #choosing columns needed from full
 NEWclean_full <- clean_full %>%
   select(`datadog score`, `Sources - see bottom right`)
