@@ -20,10 +20,10 @@ In this homework, you will try to reproduce the fantastic infographic for [top d
 1. Import the data and clean appropriately. To read in the data, you can use `readxl::read_xlsx('fileNameHere', sheet='sheetNameHere')`. Required data are in the sheets `Best in show` and `Best in show full sheet`. Take extra care on the column names and the first few rows of the data frame after read in.
 ```{r}
 #loading in the data from the environment and "import dataset" in RStudio
-KIB_Best_in_Show_public_full <- read_excel("KIB - Best in Show (public).xlsx", sheet = "Best in show full sheet", range = "A3:BS178")
+KIB_Best_in_Show_public_full <- read_excel("KIB_Best_in_Show.xlsx", sheet = "Best in show full sheet", range = "A3:BS178")
 full <- KIB_Best_in_Show_public_full
 
-KIB_Best_in_Show_public_ <- read_excel("KIB - Best in Show (public).xlsx", sheet = "Best in show", range = "A6:BS181")
+KIB_Best_in_Show_public_ <- read_excel("KIB_Best_in_Show.xlsx", sheet = "Best in show", range = "A6:BS181")
 best <- KIB_Best_in_Show_public_
 
 #removing first row of each dataset 

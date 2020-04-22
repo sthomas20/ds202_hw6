@@ -377,7 +377,7 @@ summary {
 <li>Import the data and clean appropriately. To read in the data, you can use <code>readxl::read_xlsx('fileNameHere', sheet='sheetNameHere')</code>. Required data are in the sheets <code>Best in show</code> and <code>Best in show full sheet</code>. Take extra care on the column names and the first few rows of the data frame after read in.</li>
 </ol>
 <pre class="r"><code>#loading in the data from the environment and &quot;import dataset&quot; in RStudio
-KIB_Best_in_Show_public_full &lt;- read_excel(&quot;KIB - Best in Show (public).xlsx&quot;, sheet = &quot;Best in show full sheet&quot;, range = &quot;A3:BS178&quot;)</code></pre>
+KIB_Best_in_Show_public_full &lt;- read_excel(&quot;KIB_Best_in_Show.xlsx&quot;, sheet = &quot;Best in show full sheet&quot;, range = &quot;A3:BS178&quot;)</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...4
@@ -387,7 +387,7 @@ KIB_Best_in_Show_public_full &lt;- read_excel(&quot;KIB - Best in Show (public).
 ## * … and 5 more problems</code></pre>
 <pre class="r"><code>full &lt;- KIB_Best_in_Show_public_full
 
-KIB_Best_in_Show_public_ &lt;- read_excel(&quot;KIB - Best in Show (public).xlsx&quot;, sheet = &quot;Best in show&quot;, range = &quot;A6:BS181&quot;)</code></pre>
+KIB_Best_in_Show_public_ &lt;- read_excel(&quot;KIB_Best_in_Show.xlsx&quot;, sheet = &quot;Best in show&quot;, range = &quot;A6:BS181&quot;)</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...4
