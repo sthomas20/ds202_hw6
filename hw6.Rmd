@@ -19,14 +19,14 @@ In this homework, you will try to reproduce the fantastic infographic for [top d
 
 1. Import the data and clean appropriately. To read in the data, you can use `readxl::read_xlsx('fileNameHere', sheet='sheetNameHere')`. Required data are in the sheets `Best in show` and `Best in show full sheet`. Take extra care on the column names and the first few rows of the data frame after read in.
 ```{r}
-#loading in the data from the environment and "import dataset"
+#loading in the data from the environment and "import dataset" in RStudio
 KIB_Best_in_Show_public_full <- read_excel("KIB - Best in Show (public).xlsx", sheet = "Best in show full sheet", range = "A3:BS178")
 full <- KIB_Best_in_Show_public_full
 
 KIB_Best_in_Show_public_ <- read_excel("KIB - Best in Show (public).xlsx", sheet = "Best in show", range = "A6:BS181")
 best <- KIB_Best_in_Show_public_
 
-
+#removing first row of each dataset 
 clean_full <- full %>%
   filter(`Sources - see bottom right` != 'Dog breed')
 
@@ -35,7 +35,7 @@ clean_best <- best %>%
 
 
 
-#choosing columns needed from best
+#choosing columns needed from clean_best
 NEWclean_best<- clean_best %>%
   select(`Dog breed`, category, `size category`, `popularity ranking (1-173, 1 = most popular)`, `intelligence category`)
 
@@ -50,7 +50,7 @@ NEWclean_best$intelligence_category[NEWclean_best$intelligence_category == 'no d
 
 
 
-#choosing columns needed from full
+#choosing columns needed from clean_full
 NEWclean_full <- clean_full %>%
   select(`datadog score`, `Sources - see bottom right`)
 
@@ -59,12 +59,11 @@ NEWclean_full <- NEWclean_full %>%
   rename(Dog_score = `datadog score`, Dog_breed = `Sources - see bottom right`)
 
 
-
 #Joining data frames together
 dog <- merge(NEWclean_best, NEWclean_full, by=c('Dog_breed'))
 
 
-#converting tyoes from chr to int
+#converting types
 dog$Popularity <- as.integer(dog$Popularity)
 dog$category <- as.factor(dog$category)
 dog$size_category <- as.factor(dog$size_category)
@@ -83,11 +82,10 @@ dog$size_category <- as.factor(dog$size_category)
 - appropriate legends & explanation
 
 ```{r, fig.width=13, fig.height=10}
-ggplot(dog, aes(x=Dog_score, y=Popularity, color=category, shape = size_category, size = intelligence_category)) + geom_point() + geom_text(aes(label = Dog_breed), check_overlap = TRUE, vjust=-1) + theme(panel.background = element_rect(fill = 'antiquewhite', colour = 'black'), plot.background = element_rect(fill = "antiquewhite"), legend.background = element_rect(fill = "antiquewhite"), legend.key = element_rect(fill = 'antiquewhite')) + scale_color_brewer(palette="Dark2") + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + labs(color = "Category", shape='Size', size= 'Intelligence') + xlab("Dog score") + ggtitle('Best in Show: The Ultimate Data Dog')
-
+ggplot(dog, aes(x=Dog_score, y=Popularity, color=category, shape = size_category, size = intelligence_category)) + geom_point() + geom_text(aes(label = Dog_breed), check_overlap = TRUE, vjust=-1) + theme(panel.background = element_rect(fill = 'antiquewhite', colour = 'black'), plot.background = element_rect(fill = "antiquewhite"), legend.background = element_rect(fill = "antiquewhite"), legend.key = element_rect(fill = 'antiquewhite'), plot.caption = element_text(hjust = 0)) + scale_color_brewer(palette="Dark2") + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + labs(caption = "Our Data score: Intelligence, Costs, Longevity, Grooming, Ailments, Appetite" , color = "Category", shape='Size', size= 'Intelligence') + xlab("Dog score") + ggtitle('Best in Show: The Ultimate Data Dog')
 
 ```
-
+ - After importing and cleaning the data I have produced the above plot as closely as I could to the The Ultimate Data Dog infographic. When looking at the plot you can see that I replicated the infographic by putting the composite score on the x-axis, Popularity on the y-axis, used the shape argument to describe the size of the dog, used color argument to describe the type of dog it is "herding, toy, working, etc.", used geom_text to label the each point as the the type of dog breed, and used the size argument to display the intelligence of the dog. Orginally intelligence was listed as more than two categories such as "excellent, fair, average, lowest, brightest, etc" but I used a condition based on my judgement to determine which dogs can be categorized as clever and dumb that way it is easier to visualize the intelligence category. You can see how I did to in the code above the plot. 
 
 
 Hints and Notes:
